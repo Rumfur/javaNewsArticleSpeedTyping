@@ -3,6 +3,7 @@ package newsArticleSpeedTyping;
 import javax.swing.*;
 
 import java.awt.event.*;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,25 +41,24 @@ public class GameScreen implements ActionListener {
 		spawnTimer++;
 		for (int i = 0; i < fallingWords.size(); i++) {
 			fallingWords.get(i).setPosition(speed);
-			if (fallingWords.get(i).checkForDespawn()) {
+			if (fallingWords.get(i).checkForDespawn()) { // CHECKS IF WORD HAS FALLEN OUT OF SCREEN
 				i -= fallingWords.get(i).despawn(fallingWords);
 			}
 		}
-		if (wordIndex == words.size() && fallingWords.size() == 0) {
+		if (wordIndex == words.size() && fallingWords.size() == 0) { // END OF GAME
 			timer.stop();
 			new JavaLabel("wordSpeed", layers.get("gameLayer"), 0, fHeight * 0.3, 1000, 100, labels, 10, routeGame);
-			double wordSpeed = (double) wordsWritten / ((double) time / 50);
-			labels.get("wordSpeed")
-					.setText(df.format(wordSpeed) + " words per second / " + df.format(wordSpeed * 60) + " words per minute");
-			
-			double charSpeed;
+			String wordSpeed = df.format((double) wordsWritten / ((double) time / 50));
+			labels.get("wordSpeed").setText(wordSpeed + " words per second / " + wordSpeed + " words per minute");
+
+			String charSpeed = df.format((double) charsWritten / ((double) time / 50));
 			new JavaLabel("charSpeed", layers.get("gameLayer"), 0, fHeight * 0.5, 1000, 100, labels, 10, routeGame);
-			charSpeed = (double) charsWritten / ((double) time / 50);
-			labels.get("charSpeed").setText(
-					df.format(charSpeed) + " characters per second / " + df.format(charSpeed * 60) + " characters per minute");
+			labels.get("charSpeed").setText(charSpeed + " letters per second / " + charSpeed + " letters per minute");
+			MainMenu.updateLeaderboard(wordSpeed + " |" + charSpeed + "|Vasja " + "\n",
+					new File(MainMenu.leaderboardRoute));
 		}
 		time++;
-		labels.get("timer").setText("" + df.format((double)time / 50));
+		labels.get("timer").setText("" + df.format((double) time / 50));
 	}
 
 	public static void spawnWord() {
@@ -91,7 +91,10 @@ public class GameScreen implements ActionListener {
 				wordsWritten++;
 				charsWritten += word.length();
 				labels.get("writtenWords").setText("Written = " + wordsWritten);
-				spawnWord();
+				if (fallingWords.size() == 0) {
+					spawnWord();
+				}
+				
 				return;
 			}
 		}
@@ -113,7 +116,6 @@ public class GameScreen implements ActionListener {
 		new JavaLabel("mistakesBox", layers.get("gameLayer"), fWidth * 0.2, fHeight * 0.89, 200, 35, labels, 10,
 				routeGame);
 		new JavaLabel("timer", layers.get("gameLayer"), 0, fHeight * 0.7, 100, 70, labels, 10, routeGame);
-
 		labels.get("writtenWords").setText("Written = " + wordsWritten);
 		labels.get("mistakesBox").setText("Mistakes = " + wordsWritten);
 	}
@@ -125,10 +127,10 @@ public class GameScreen implements ActionListener {
 	void setupParameters2(String difficulty) {
 		speed = 5;
 		spawnInterval = 200;
-		if (difficulty.equals("medium")) {
+		if (difficulty.equals("MEDIUM")) {
 			speed = 10;
 			spawnInterval = 150;
-		} else if (difficulty.equals("hard")) {
+		} else if (difficulty.equals("HARD")) {
 			speed = 15;
 			spawnInterval = 100;
 		}

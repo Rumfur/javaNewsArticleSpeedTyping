@@ -5,6 +5,7 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 
 import inputClasses.JavaLabel;
@@ -13,8 +14,8 @@ import inputClasses.ProgramButton;
 
 public class MainMenu implements ActionListener {
 	public static File route = new File(System.getProperty("user.dir"));
-	public static String routeMenu = route + "//MenuAssets//";
-	public static String difficulty = "easy", leaderboardText = "";
+	public static String routeMenu = route + "//MenuAssets//", leaderboardRoute = route + "//leaderboard.txt";
+	public static String difficulty = "EASY", leaderboardText = "";
 	public static JFrame menuScreen;
 	public static Timer menuTimer;
 	public static int fWidth = 1000, fHeight = 700;
@@ -31,9 +32,11 @@ public class MainMenu implements ActionListener {
 		setupLayers();
 		layers.get("menuLayer").selected = true;
 		setupLabels();
+		menuButtons.get(difficulty).selected = true;
+		menuButtons.get(difficulty).buttonIconSwitch(2, true);
 		readFile(new File(route + "//tempText.txt"));
 		setupLeaderboard();
-		readLeaderboardFile(new File(route + "//leaderboard.txt"));
+		readLeaderboardFile(new File(leaderboardRoute));
 		menuTimer = new Timer(10, this);
 		menuTimer.start();
 	}
@@ -81,7 +84,7 @@ public class MainMenu implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		highscoreField.setText("WPM       USERNAME\n" + leaderboardText);
+		highscoreField.setText("WPM|CPM|Username\n" + leaderboardText);
 	}
 
 	static void setupLeaderboard() {
@@ -94,9 +97,23 @@ public class MainMenu implements ActionListener {
 		labels.get("leaderBoard").add(highscoreField);
 	}
 
-	static void updateLeaderboard(double wordSpeed, double charSpeed) {
-		leaderboardText += wordSpeed + " " + charSpeed + "\n";
-		
+	static void updateLeaderboard(String leaderboardEntry, File file) {
+		leaderboardText += leaderboardEntry;
+		try {
+			file.delete();
+			file.createNewFile();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		try {
+			boolean append = true;
+			FileWriter wrt = new FileWriter(file, append);
+			wrt.write(leaderboardText);
+			wrt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		highscoreField.setText("WPM|CPM|Username\n" + leaderboardText);
 	}
 
 	static void setupLabels() {
@@ -105,13 +122,13 @@ public class MainMenu implements ActionListener {
 		new ProgramButton("INFO PAGE", layers.get("menuLayer"), fWidth * 0.3, fHeight * 0.3, 400, 100, menuButtons);
 		new ProgramButton("EXIT", layers.get("menuLayer"), fWidth * 0.3, fHeight * 0.5, 400, 100, menuButtons);
 		new JavaLabel("infoBackground", layers.get("infoLayer"), 0, 0, 1000, 700, labels, 0, routeMenu); // INFO
-		new ProgramButton("BACK TO MENU", layers.get("infoLayer"), fWidth * 0.3, fHeight * 0.5, 400, 50, menuButtons);
+		new ProgramButton("BACK", layers.get("infoLayer"), fWidth * 0.3, fHeight * 0.5, 400, 50, menuButtons);
 		new JavaLabel("playBackground", layers.get("playScreen"), 0, 0, 1000, 700, labels, 1, routeMenu); // PLAY
-		new ProgramButton("BACK TO MENU", layers.get("playScreen"), fWidth * 0.3, fHeight * 0.5, 400, 100, menuButtons);
-		new ProgramButton("PLAY", layers.get("playScreen"), fWidth * 0.3, fHeight * 0.3, 400, 100, menuButtons);
-		new ProgramButton("EASY", layers.get("playScreen"), fWidth * 0.1, fHeight * 0.1, 150, 50, menuButtons);
-		new ProgramButton("MEDIUM", layers.get("playScreen"), fWidth * 0.1, fHeight * 0.2, 150, 50, menuButtons);
-		new ProgramButton("HARD", layers.get("playScreen"), fWidth * 0.1, fHeight * 0.3, 150, 50, menuButtons);
+		new ProgramButton("BACK", layers.get("playScreen"), fWidth * 0.05, fHeight * 0.5, 150, 50, menuButtons);
+		new ProgramButton("PLAY", layers.get("playScreen"), fWidth * 0.2, fHeight * 0.5, 150, 50, menuButtons);
+		new ProgramButton("EASY", layers.get("playScreen"), fWidth * 0.125, fHeight * 0.15, 150, 50, menuButtons);
+		new ProgramButton("MEDIUM", layers.get("playScreen"), fWidth * 0.125, fHeight * 0.25, 150, 50, menuButtons);
+		new ProgramButton("HARD", layers.get("playScreen"), fWidth * 0.125, fHeight * 0.35, 150, 50, menuButtons);
 		new JavaLabel("leaderBoard", layers.get("playScreen"), fWidth * 0.75, fHeight * 0.1, 200, 400, labels, 2,
 				routeMenu);
 	}
@@ -123,7 +140,7 @@ public class MainMenu implements ActionListener {
 	}
 
 	static JFrame setupScreen(JFrame frame, int frameWidth, int frameHeight) {
-		frame = new JFrame("Need For Drag Racing");
+		frame = new JFrame("News Article Speed Typing");
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);

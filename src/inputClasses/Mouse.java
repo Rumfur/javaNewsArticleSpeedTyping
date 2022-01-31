@@ -33,7 +33,7 @@ public class Mouse implements MouseListener {
 						-MainMenu.layers.get("infoLayer").yStart);
 				menuLayerSelect("infoLayer");
 				
-			} else if (button.name == "BACK TO MENU" && button.inZone) { // RETURNS TO MAIN MENU
+			} else if (button.name == "BACK" && button.inZone) { // RETURNS TO MAIN MENU
 				menuLayerSelect("menuLayer");
 				
 			} else if (button.name == "EXIT" && button.inZone) {

@@ -17,7 +17,9 @@ public class ProgramButton extends JLabel {
 	static int fWidth , fHeight;
 	
 	String name;
-	boolean inZone, selected;
+	boolean inZone;
+
+	public boolean selected;
 	ImageIcon[] buttonIcon = new ImageIcon[3];
 	
 	public static void setSizing(int frameWidth, int frameHeight) {
