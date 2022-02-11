@@ -10,10 +10,12 @@ public class JavaLabel extends JLabel {
 
 	private static final long serialVersionUID = 1L;
 	static int fWidth, fHeight;
+	public static Font font;
 	
 	public static void setSizing(int frameWidth, int frameHeight) {
 		fWidth = frameWidth;
 		fHeight = frameHeight;
+		font = new Font("Verdana", Font.BOLD, (int)(fWidth * 0.02));
 	}
 
 	public JavaLabel(String pngName, Object location, double x, double y, int width, int height, HashMap<String, JLabel> list,

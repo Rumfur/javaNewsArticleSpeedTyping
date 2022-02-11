@@ -2,27 +2,41 @@ package objects;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import inputClasses.JavaLabel;
 import newsArticleSpeedTyping.GameScreen;
 
-public class fallingWord extends JavaObject {
+public class fallingWord extends JLabel{
 
 	private static final long serialVersionUID = 1L;
+	static Random random = new Random();
+	static int fWidth , fHeight;
+
+	public static void setSizing(int frameWidth, int frameHeight) {
+		fWidth = frameWidth;
+		fHeight = frameHeight;
+	}
 	
 	String word;
 	double y;
-
+	Font font = JavaLabel.font;
+	
 	public fallingWord(int x, int y, int width, int height, String name, ArrayList<fallingWord> list, int layer,
 			String route) {
-		super(x, y, width, height, name, layer, route);
-		this.y = y;
+		super(new ImageIcon(new ImageIcon(route + name + ".png").getImage().getScaledInstance(fWidth * width / 1000,
+				fHeight * width / 1000, Image.SCALE_SMOOTH)), JLabel.CENTER);
+		GameScreen.layers.get("game").add(this, (Integer) layer);
+		this.y = - fHeight * height / 2000;
 		this.word = name;
 		this.setHorizontalTextPosition(JLabel.CENTER);
 		this.setForeground(Color.white);
-		this.setFont(new Font("Verdana", Font.BOLD, fWidth * 20 / 1000));
+		this.setFont(font);
 		this.setText(name);
 		this.setBounds((random.nextInt(fWidth - fWidth * width / 1000) + 1), y, fWidth * width / 1000, fHeight * height / 1000);
 		list.add(this);
@@ -31,14 +45,10 @@ public class fallingWord extends JavaObject {
 	public String getWord() {
 		return this.word;
 	}
-	
-	public double getTheY() {
-		return this.y;
-	}
 
 	public boolean checkForDespawn() {
-		if (this.getY() > fHeight) {
-			GameScreen.layers.get("gameLayer").remove(this);
+		if (this.getY() > fHeight) { // if word has fallen out of the screen, it is despawned
+			GameScreen.layers.get("game").remove(this);
 			return true;
 		}
 		return false;
@@ -46,7 +56,7 @@ public class fallingWord extends JavaObject {
 
 	public int despawn(ArrayList<fallingWord> list) {
 		this.setVisible(false);
-		GameScreen.layers.get("gameLayer").remove(this);
+		GameScreen.layers.get("game").remove(this);
 		list.remove(this);
 		return 1;
 	}

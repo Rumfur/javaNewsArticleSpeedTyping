@@ -12,8 +12,7 @@ public class JavaLayeredPane extends JLayeredPane {
 	int xStart, yStart;
 	public boolean selected;
 
-	@SuppressWarnings("unchecked")
-	public JavaLayeredPane(String name, Object location, int xStart, int yStart, int width, int height, Object list,
+	public JavaLayeredPane(String name, Object location, int xStart, int yStart, int width, int height, HashMap<String, JavaLayeredPane> list,
 			Integer layer) {
 		super();
 		this.name = name;
@@ -26,7 +25,7 @@ public class JavaLayeredPane extends JLayeredPane {
 		} catch (Exception e) {
 			((JavaLayeredPane) location).add(this, layer);
 		}
-		((HashMap<String, JavaLayeredPane>) list).put(name, this);
+		list.put(name, this);
 	}
 
 	public void setSlidePoint(int x, int y) { // SETS LOCATION TO WHERE THE LAYER HAS TO SLIDE TO

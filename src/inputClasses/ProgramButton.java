@@ -14,11 +14,12 @@ public class ProgramButton extends JLabel {
 	private static final long serialVersionUID = 1L;
 
 	public static String routeButtons = MainMenu.route + "//Buttons//";
+	
 	static int fWidth , fHeight;
+	Font font = JavaLabel.font;
 	
 	String name;
 	boolean inZone;
-
 	public boolean selected;
 	ImageIcon[] buttonIcon = new ImageIcon[3];
 	
@@ -39,7 +40,7 @@ public class ProgramButton extends JLabel {
 		this.name = name;
 		this.setForeground(Color.white);
 		this.setHorizontalTextPosition(JLabel.CENTER);
-		this.setFont(new Font("Verdana", Font.BOLD, fWidth * 20 / 1000));
+		this.setFont(font);
 		this.setIcon(buttonIcon[0]);
 		this.inZone = false;
 		this.selected = false;

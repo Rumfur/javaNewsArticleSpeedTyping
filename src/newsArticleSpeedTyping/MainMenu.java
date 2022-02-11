@@ -30,7 +30,7 @@ public class MainMenu implements ActionListener {
 		fHeight = frameHeight;
 		menuScreen = setupScreen(menuScreen, frameWidth, frameHeight);
 		setupLayers();
-		layers.get("menuLayer").selected = true;
+		layers.get("menu").selected = true;
 		setupLabels();
 		menuButtons.get(difficulty).selected = true;
 		menuButtons.get(difficulty).buttonIconSwitch(2, true);
@@ -43,7 +43,7 @@ public class MainMenu implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		for (String layer : layers.keySet()) {
-			layers.get(layer).Move();
+			layers.get(layer).Move(); // moves background if user switches screens
 		}
 	}
 
@@ -59,7 +59,7 @@ public class MainMenu implements ActionListener {
 				data = fileReader.nextLine().split(" "); // splits line from file into array of strings
 				for (int i = 0; i < data.length; i++) {
 					if (!data[i].isEmpty()) {
-						words.add(data[i]);
+						words.add(data[i]); // adds individual words to String array
 					}
 				}
 			}
@@ -71,8 +71,11 @@ public class MainMenu implements ActionListener {
 
 	public static void readLeaderboardFile(File file) {
 		if (file.exists() != true) {
-			System.out.println("DATA FILE NOT FOUND!");
-			System.exit(0);
+			try {
+				file.createNewFile();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 		}
 		leaderboardText = "";
 		try {
@@ -117,26 +120,25 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void setupLabels() {
-		new JavaLabel("menuBackground", layers.get("menuLayer"), 0, 0, 1000, 700, labels, 0, routeMenu); // MENU
-		new ProgramButton("READ ARTICLES", layers.get("menuLayer"), fWidth * 0.3, fHeight * 0.1, 400, 100, menuButtons);
-		new ProgramButton("INFO PAGE", layers.get("menuLayer"), fWidth * 0.3, fHeight * 0.3, 400, 100, menuButtons);
-		new ProgramButton("EXIT", layers.get("menuLayer"), fWidth * 0.3, fHeight * 0.5, 400, 100, menuButtons);
-		new JavaLabel("infoBackground", layers.get("infoLayer"), 0, 0, 1000, 700, labels, 0, routeMenu); // INFO
-		new ProgramButton("BACK", layers.get("infoLayer"), fWidth * 0.3, fHeight * 0.5, 400, 50, menuButtons);
-		new JavaLabel("playBackground", layers.get("playScreen"), 0, 0, 1000, 700, labels, 1, routeMenu); // PLAY
-		new ProgramButton("BACK", layers.get("playScreen"), fWidth * 0.05, fHeight * 0.5, 150, 50, menuButtons);
-		new ProgramButton("PLAY", layers.get("playScreen"), fWidth * 0.2, fHeight * 0.5, 150, 50, menuButtons);
-		new ProgramButton("EASY", layers.get("playScreen"), fWidth * 0.125, fHeight * 0.15, 150, 50, menuButtons);
-		new ProgramButton("MEDIUM", layers.get("playScreen"), fWidth * 0.125, fHeight * 0.25, 150, 50, menuButtons);
-		new ProgramButton("HARD", layers.get("playScreen"), fWidth * 0.125, fHeight * 0.35, 150, 50, menuButtons);
-		new JavaLabel("leaderBoard", layers.get("playScreen"), fWidth * 0.75, fHeight * 0.1, 200, 400, labels, 2,
-				routeMenu);
+		new JavaLabel("menuBackground", layers.get("menu"), 0, 0, 1000, 700, labels, 0, routeMenu);
+		new ProgramButton("READ ARTICLES", layers.get("menu"), fWidth * 0.3, fHeight * 0.1, 400, 100, menuButtons);
+		new ProgramButton("INFO PAGE", layers.get("menu"), fWidth * 0.3, fHeight * 0.3, 400, 100, menuButtons);
+		new ProgramButton("EXIT", layers.get("menu"), fWidth * 0.3, fHeight * 0.5, 400, 100, menuButtons);
+		new JavaLabel("infoBackground", layers.get("info"), 0, 0, 1000, 700, labels, 0, routeMenu);
+		new ProgramButton("BACK", layers.get("info"), fWidth * 0.3, fHeight * 0.5, 400, 50, menuButtons);
+		new JavaLabel("playBackground", layers.get("play"), 0, 0, 1000, 700, labels, 1, routeMenu);
+		new ProgramButton("BACK", layers.get("play"), fWidth * 0.05, fHeight * 0.5, 150, 50, menuButtons);
+		new ProgramButton("PLAY", layers.get("play"), fWidth * 0.2, fHeight * 0.5, 150, 50, menuButtons);
+		new ProgramButton("EASY", layers.get("play"), fWidth * 0.125, fHeight * 0.15, 150, 50, menuButtons);
+		new ProgramButton("MEDIUM", layers.get("play"), fWidth * 0.125, fHeight * 0.25, 150, 50, menuButtons);
+		new ProgramButton("HARD", layers.get("play"), fWidth * 0.125, fHeight * 0.35, 150, 50, menuButtons);
+		new JavaLabel("leaderBoard", layers.get("play"), fWidth * 0.4, fHeight * 0.1, 500, 400, labels, 2, routeMenu);
 	}
 
 	static void setupLayers() {
-		new JavaLayeredPane("menuLayer", menuScreen, 0, -fHeight, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("playScreen", menuScreen, fWidth, 0, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("infoLayer", menuScreen, -fWidth, 0, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("menu", menuScreen, 0, -fHeight, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("play", menuScreen, fWidth, 0, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("info", menuScreen, -fWidth, 0, fWidth, fHeight, layers, 0);
 	}
 
 	static JFrame setupScreen(JFrame frame, int frameWidth, int frameHeight) {

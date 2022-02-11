@@ -19,9 +19,9 @@ public class Mouse implements MouseListener {
 		if (MainMenu.menuScreen.isVisible()) {// FOR MENU BUTTONS
 			
 			if (button.name == "READ ARTICLES" && button.inZone) { // OPENS RACE PANE
-				MainMenu.layers.get("menuLayer").setSlidePoint(-MainMenu.layers.get("playScreen").xStart,
-						-MainMenu.layers.get("playScreen").yStart);
-				menuLayerSelect("playScreen");
+				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("play").xStart,
+						-MainMenu.layers.get("play").yStart);
+				menuSelect("play");
 				
 			} else if (button.name == "PLAY") {// ACTIVATES THE GAME
 				new GameScreen(MainMenu.difficulty, MainMenu.words);
@@ -29,12 +29,12 @@ public class Mouse implements MouseListener {
 				MainMenu.menuTimer.stop();
 				
 			} else if (button.name == "INFO PAGE" && button.inZone) { // OPENS INFO
-				MainMenu.layers.get("menuLayer").setSlidePoint(-MainMenu.layers.get("infoLayer").xStart,
-						-MainMenu.layers.get("infoLayer").yStart);
-				menuLayerSelect("infoLayer");
+				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("info").xStart,
+						-MainMenu.layers.get("info").yStart);
+				menuSelect("info");
 				
 			} else if (button.name == "BACK" && button.inZone) { // RETURNS TO MAIN MENU
-				menuLayerSelect("menuLayer");
+				menuSelect("menu");
 				
 			} else if (button.name == "EXIT" && button.inZone) {
 				System.exit(0);
@@ -44,7 +44,7 @@ public class Mouse implements MouseListener {
 					if (button.name.equals(difficultyChoice)) {
 						((ProgramButton) MainMenu.menuButtons.get(difficultyChoice)).selected = true;
 						MainMenu.difficulty = button.name;
-						
+
 					} else {
 						((ProgramButton) MainMenu.menuButtons.get(difficultyChoice)).selected = false;
 						((ProgramButton) MainMenu.menuButtons.get(difficultyChoice)).buttonIconSwitch(0, false);
@@ -66,7 +66,7 @@ public class Mouse implements MouseListener {
 		}
 	}
 
-	public void menuLayerSelect(String name) {
+	public void menuSelect(String name) {
 		MainMenu.layers.get(name).selected = true;
 		for (String layer : MainMenu.layers.keySet()) {
 			if (layer != name) {
@@ -77,6 +77,7 @@ public class Mouse implements MouseListener {
 
 	public static void gameClose() {
 		GameScreen.timer.stop();
+		GameScreen.fallingWords.clear();
 		GameScreen.gameScreen.removeAll();
 		GameScreen.gameScreen.dispose();
 	}
@@ -96,4 +97,3 @@ public class Mouse implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 	}
 }
-// 1 konstruktors; 7 metodes; 112 rindas

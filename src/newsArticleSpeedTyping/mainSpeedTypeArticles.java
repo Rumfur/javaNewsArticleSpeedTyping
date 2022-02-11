@@ -2,7 +2,7 @@ package newsArticleSpeedTyping;
 
 import inputClasses.JavaLabel;
 import inputClasses.ProgramButton;
-import objects.JavaObject;
+import objects.fallingWord;
 
 public class mainSpeedTypeArticles {
 
@@ -11,8 +11,9 @@ public class mainSpeedTypeArticles {
 		if (System.getProperty("os.name").startsWith("Windows")) {
 			frameWidth += 16;
 			frameHeight += 40;
+			System.getProperty("os.name");
 		}
-		JavaObject.setSizing(frameWidth, frameHeight);
+		fallingWord.setSizing(frameWidth, frameHeight);
 		JavaLabel.setSizing(frameWidth, frameHeight);
 		ProgramButton.setSizing(frameWidth, frameHeight);
 		new MainMenu(frameWidth, frameHeight);
