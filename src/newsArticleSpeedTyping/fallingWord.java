@@ -1,4 +1,4 @@
-package objects;
+package newsArticleSpeedTyping;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import inputClasses.JavaLabel;
-import newsArticleSpeedTyping.GameScreen;
 
 public class fallingWord extends JLabel{
 

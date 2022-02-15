@@ -18,7 +18,7 @@ public class MainMenu implements ActionListener {
 	public static String difficulty = "EASY", leaderboardText = "";
 	public static JFrame menuScreen;
 	public static Timer menuTimer;
-	public static int fWidth = 1000, fHeight = 700;
+	public static int fWidth, fHeight;
 	public static ArrayList<String> words = new ArrayList<String>();
 	public static HashMap<String, ProgramButton> menuButtons = new HashMap<String, ProgramButton>();
 	public static HashMap<String, JavaLayeredPane> layers = new HashMap<String, JavaLayeredPane>();

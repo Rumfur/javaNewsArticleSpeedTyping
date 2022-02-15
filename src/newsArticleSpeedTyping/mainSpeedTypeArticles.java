@@ -2,7 +2,6 @@ package newsArticleSpeedTyping;
 
 import inputClasses.JavaLabel;
 import inputClasses.ProgramButton;
-import objects.fallingWord;
 
 public class mainSpeedTypeArticles {
 

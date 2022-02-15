@@ -54,4 +54,3 @@ public class JavaLayeredPane extends JLayeredPane {
 		return currentPos;
 	}
 }
-// 1 konstruktors; 3 metodes;ð 60 rindas
