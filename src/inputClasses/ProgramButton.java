@@ -32,11 +32,11 @@ public class ProgramButton extends JLabel {
 			HashMap<String, ProgramButton> list) {
 		super(name);
 		this.buttonIcon[0] = new ImageIcon(new ImageIcon(routeButtons + "button.png").getImage()
-				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH));
+				.getScaledInstance(fWidth * width / 1000, fHeight * height / 700, Image.SCALE_SMOOTH));
 		this.buttonIcon[1] = new ImageIcon(new ImageIcon(routeButtons + "buttonOn.png").getImage()
-				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH));
+				.getScaledInstance(fWidth * width / 1000, fHeight * height / 700, Image.SCALE_SMOOTH));
 		this.buttonIcon[2] = new ImageIcon(new ImageIcon(routeButtons + "buttonPressed.png").getImage()
-				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH));
+				.getScaledInstance(fWidth * width / 1000, fHeight * height / 700, Image.SCALE_SMOOTH));
 		this.name = name;
 		this.setForeground(Color.white);
 		this.setHorizontalTextPosition(JLabel.CENTER);
@@ -44,7 +44,7 @@ public class ProgramButton extends JLabel {
 		this.setIcon(buttonIcon[0]);
 		this.inZone = false;
 		this.selected = false;
-		this.setBounds((int)(fWidth * x / 1000), (int)(fHeight * y / 500), (int)(fWidth * width / 1000), (int)(fWidth * height / 1000));
+		this.setBounds((int)(fWidth * x / 1000), (int)(fHeight * y / 700), (int)(fWidth * width / 1000), (int)(fHeight * height / 700));
 		location.add(this, (Integer) 20);
 		new Mouse(this);
 		list.put(name, this);

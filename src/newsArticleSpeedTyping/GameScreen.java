@@ -28,7 +28,7 @@ public class GameScreen implements ActionListener {
 	public static HashMap<String, ProgramButton> gameButtons = new HashMap<String, ProgramButton>();
 	public static HashMap<String, JavaLayeredPane> layers = new HashMap<String, JavaLayeredPane>();
 	public static HashMap<String, JLabel> labels = new HashMap<String, JLabel>();
-	public static ArrayList<fallingWord> fallingWords = new ArrayList<fallingWord>();
+	public static ArrayList<FallingWord> fallingWords = new ArrayList<FallingWord>();
 
 	public GameScreen(String difficulty, ArrayList<String> data) {
 		setupParameters(data);
@@ -98,7 +98,7 @@ public class GameScreen implements ActionListener {
 
 	public static void spawnWord() {
 		if (wordIndex < words.size()) {
-			new fallingWord(0, 0, (int) (fWidth * 0.3), 72, words.get(wordIndex), fallingWords, 24, routeGame);
+			new FallingWord(0, 0, (int) (fWidth * 0.3), 72, words.get(wordIndex), fallingWords, 24, routeGame);
 			wordIndex++;
 			spawnTimer = 0;
 		}

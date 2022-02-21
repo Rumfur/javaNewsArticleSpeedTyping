@@ -17,38 +17,43 @@ public class Mouse implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		ProgramButton button = (ProgramButton) e.getSource();
 		if (MainMenu.menuScreen.isVisible()) {// FOR MENU BUTTONS
-			
+
 			if (button.name == "READ ARTICLES" && button.inZone) { // OPENS RACE PANE
 				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("play").xStart,
 						-MainMenu.layers.get("play").yStart);
 				menuSelect("play");
-				
-			} else if (button.name == "PLAY") {// ACTIVATES THE GAME
+
+			} else if (button.name == "PLAY" && button.inZone) {// ACTIVATES THE GAME
 				new GameScreen(MainMenu.difficulty, MainMenu.words);
 				MainMenu.menuScreen.setVisible(false);
 				MainMenu.menuTimer.stop();
-				
+
 			} else if (button.name == "INFO PAGE" && button.inZone) { // OPENS INFO
 				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("info").xStart,
 						-MainMenu.layers.get("info").yStart);
 				menuSelect("info");
-				
+
 			} else if (button.name == "BACK" && button.inZone) { // RETURNS TO MAIN MENU
 				menuSelect("menu");
-				
+
 			} else if (button.name == "EXIT" && button.inZone) {
 				System.exit(0);
-				
-			} else {
-				for (String difficultyChoice : MainMenu.menuButtons.keySet()) { // CHECKS FOR CHOSEN DIFFICULTY
-					if (button.name.equals(difficultyChoice)) {
-						((ProgramButton) MainMenu.menuButtons.get(difficultyChoice)).selected = true;
-						MainMenu.difficulty = button.name;
 
+			} else {
+				int i = 0;
+				for (String difficultyChoice : MainMenu.difficultyButtons.keySet()) { // CHECKS FOR CHOSEN DIFFICULTY
+					if (button.name.equals(difficultyChoice)) {
+						((ProgramButton) MainMenu.difficultyButtons.get(difficultyChoice)).selected = true;
+						MainMenu.difficulty = button.name;
+						break;
 					} else {
-						((ProgramButton) MainMenu.menuButtons.get(difficultyChoice)).selected = false;
-						((ProgramButton) MainMenu.menuButtons.get(difficultyChoice)).buttonIconSwitch(0, false);
+						((ProgramButton) MainMenu.difficultyButtons.get(difficultyChoice)).selected = false;
+						((ProgramButton) MainMenu.difficultyButtons.get(difficultyChoice)).buttonIconSwitch(0, false);
 					}
+					i++;
+				}
+				if (i == MainMenu.difficultyButtons.keySet().size()) {
+					((ProgramButton) MainMenu.difficultyButtons.get(MainMenu.difficulty)).selected = true;
 				}
 			}
 		} else {// FOR GAME BUTTONS
