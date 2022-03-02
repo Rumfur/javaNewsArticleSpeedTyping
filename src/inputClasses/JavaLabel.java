@@ -22,7 +22,7 @@ public class JavaLabel extends JLabel {
 			Integer layer, String route) {// CONSTRUCTS JLABEL
 		super(new ImageIcon(new ImageIcon(route + pngName + ".png").getImage().getScaledInstance(width * fWidth / 1000,
 				height * fHeight / 700, Image.SCALE_SMOOTH)), JLabel.CENTER);
-		this.setBounds((int)x, (int)y, fWidth * width / 1000, fHeight * height / 700);
+		this.setBounds((int)(fWidth * x / 1000), (int)(fHeight * y / 700), fWidth * width / 1000, fHeight * height / 700);
 		try {
 			((JavaLayeredPane) location).add(this, layer);
 		} catch (Exception e) {

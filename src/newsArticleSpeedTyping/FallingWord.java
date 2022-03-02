@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 
 import inputClasses.JavaLabel;
 
-public class fallingWord extends JLabel{
+public class FallingWord extends JLabel{
 
 	private static final long serialVersionUID = 1L;
 	static Random random = new Random();
@@ -26,7 +26,7 @@ public class fallingWord extends JLabel{
 	double y;
 	Font font = JavaLabel.font;
 	
-	public fallingWord(int x, int y, int width, int height, String name, ArrayList<fallingWord> list, int layer,
+	public FallingWord(int x, int y, int width, int height, String name, ArrayList<FallingWord> list, int layer,
 			String route) {
 		super(new ImageIcon(new ImageIcon(route + name + ".png").getImage().getScaledInstance(fWidth * width / 1000,
 				fHeight * width / 1000, Image.SCALE_SMOOTH)), JLabel.CENTER);
@@ -53,7 +53,7 @@ public class fallingWord extends JLabel{
 		return false;
 	}
 
-	public int despawn(ArrayList<fallingWord> list) {
+	public int despawn(ArrayList<FallingWord> list) {
 		this.setVisible(false);
 		GameScreen.layers.get("game").remove(this);
 		list.remove(this);

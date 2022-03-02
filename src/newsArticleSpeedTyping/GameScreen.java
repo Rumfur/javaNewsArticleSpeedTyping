@@ -28,7 +28,7 @@ public class GameScreen implements ActionListener {
 	public static HashMap<String, ProgramButton> gameButtons = new HashMap<String, ProgramButton>();
 	public static HashMap<String, JavaLayeredPane> layers = new HashMap<String, JavaLayeredPane>();
 	public static HashMap<String, JLabel> labels = new HashMap<String, JLabel>();
-	public static ArrayList<fallingWord> fallingWords = new ArrayList<fallingWord>();
+	public static ArrayList<FallingWord> fallingWords = new ArrayList<FallingWord>();
 
 	public GameScreen(String difficulty, ArrayList<String> data) {
 		setupParameters(data);
@@ -98,7 +98,7 @@ public class GameScreen implements ActionListener {
 
 	public static void spawnWord() {
 		if (wordIndex < words.size()) {
-			new fallingWord(0, 0, (int) (fWidth * 0.3), 72, words.get(wordIndex), fallingWords, 24, routeGame);
+			new FallingWord(0, 0, (int) (fWidth * 0.3), 72, words.get(wordIndex), fallingWords, 24, routeGame);
 			wordIndex++;
 			spawnTimer = 0;
 		}
@@ -123,9 +123,9 @@ public class GameScreen implements ActionListener {
 
 		new JavaLayeredPane("game", gameScreen, 0, 0, fWidth, fHeight, layers, 0);
 		new JavaLabel("gameBackground", layers.get("game"), 0, 0, fWidth, fHeight, labels, 0, routeGame);
-		new ProgramButton("RESET", layers.get("game"), fWidth * 0.58, fHeight * 0.6, 200, 70, gameButtons);
-		new ProgramButton("BACK TO MENU", layers.get("game"), fWidth * 0.78, fHeight * 0.6, 200, 70, gameButtons);
-		new JavaLabel("bottomLabel", layers.get("game"), 0, fHeight * 0.846, 1000, 72, labels, 10, routeGame);
+		new ProgramButton("RESET", layers.get("game"), fWidth * 0.58, fHeight * 0.844, 200, 70, gameButtons);
+		new ProgramButton("BACK TO MENU", layers.get("game"), fWidth * 0.78, fHeight * 0.844, 200, 70, gameButtons);
+		new JavaLabel("bottomLabel", layers.get("game"), 0, fHeight * 0.844, 1000, 72, labels, 10, routeGame);
 		new JavaLabel("writtenWords", labels.get("bottomLabel"), 0, 0, 200, 35, labels, 1, routeGame);
 		new JavaLabel("mistakesBox", labels.get("bottomLabel"), 0, fHeight * 0.05, 200, 36, labels, 1, routeGame);
 		new JavaLabel("textBox", labels.get("bottomLabel"), fWidth * 0.2, 0, 380, 70, labels, 1, routeGame);
