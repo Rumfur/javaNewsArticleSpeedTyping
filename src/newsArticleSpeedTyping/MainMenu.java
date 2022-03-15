@@ -122,20 +122,20 @@ public class MainMenu implements ActionListener {
 
 	static void setupLabels() {
 		new JavaLabel("menuBackground", layers.get("menu"), 0, 0, 1000, 700, labels, 0, routeMenu);
-		new ProgramButton("READ ARTICLES", layers.get("menu"), fWidth * 0.3, fHeight * 0.1, 400, 100, menuButtons);
-		new ProgramButton("INFO PAGE", layers.get("menu"), fWidth * 0.3, fHeight * 0.3, 400, 100, menuButtons);
-		new ProgramButton("EXIT", layers.get("menu"), fWidth * 0.3, fHeight * 0.5, 400, 100, menuButtons);
+		new ProgramButton("READ ARTICLES", layers.get("menu"), fWidth * 0.3, fHeight * 0.2, 400, 100, menuButtons);
+		new ProgramButton("INFO PAGE", layers.get("menu"), fWidth * 0.3, fHeight * 0.4, 400, 100, menuButtons);
+		new ProgramButton("EXIT", layers.get("menu"), fWidth * 0.3, fHeight * 0.6, 400, 100, menuButtons);
 		new JavaLabel("infoBackground", layers.get("info"), 0, 0, 1000, 700, labels, 0, routeMenu);
-		new ProgramButton("BACK", layers.get("info"), fWidth * 0.3, fHeight * 0.5, 400, 50, menuButtons);
+		new ProgramButton("BACK", layers.get("info"), fWidth * 0.3, fHeight * 0.6, 400, 50, menuButtons);
 		new JavaLabel("playBackground", layers.get("play"), 0, 0, 1000, 700, labels, 1, routeMenu);
-		new ProgramButton("EASY", layers.get("play"), fWidth * 0.125, fHeight * 0.125, 150, 50, difficultyButtons);
-		new ProgramButton("MEDIUM", layers.get("play"), fWidth * 0.125, fHeight * 0.2, 150, 50, difficultyButtons);
-		new ProgramButton("HARD", layers.get("play"), fWidth * 0.125, fHeight * 0.275, 150, 50, difficultyButtons);
-		new ProgramButton("PLAY", layers.get("play"), fWidth * 0.1, fHeight * 0.45, 200, 50, menuButtons);
-		new ProgramButton("BACK", layers.get("play"), fWidth * 0.1, fHeight * 0.525, 200, 50, menuButtons);
-		new JavaLabel("leaderBoard", layers.get("play"), fWidth * 0.401, fHeight * 0.1, 500, 520, labels, 2, routeMenu);
-		new ProgramButton("/\\", layers.get("play"), fWidth * 0.4, fHeight * 0.06, 500, 20, menuButtons);
-		new ProgramButton("\\/", layers.get("play"), fWidth * 0.4, fHeight * 0.6, 500, 20, menuButtons);
+		new ProgramButton("EASY", layers.get("play"), fWidth * 0.125, fHeight * 0.15, 150, 50, difficultyButtons);
+		new ProgramButton("MEDIUM", layers.get("play"), fWidth * 0.125, fHeight * 0.25, 150, 50, difficultyButtons);
+		new ProgramButton("HARD", layers.get("play"), fWidth * 0.125, fHeight * 0.35, 150, 50, difficultyButtons);
+		new ProgramButton("PLAY", layers.get("play"), fWidth * 0.1, fHeight * 0.65, 200, 50, menuButtons);
+		new ProgramButton("BACK", layers.get("play"), fWidth * 0.1, fHeight * 0.72, 200, 50, menuButtons);
+		new JavaLabel("leaderBoard", layers.get("play"), fWidth * 0.4, fHeight * 0.1, 500, 520, labels, 2, routeMenu);
+		new ProgramButton("/\\", layers.get("play"), fWidth * 0.4, fHeight * 0.06, 500, 30, menuButtons);
+		new ProgramButton("\\/", layers.get("play"), fWidth * 0.4, fHeight * 0.84, 500, 30, menuButtons);
 		
 	}
 
