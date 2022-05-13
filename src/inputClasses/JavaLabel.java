@@ -11,18 +11,20 @@ public class JavaLabel extends JLabel {
 	private static final long serialVersionUID = 1L;
 	static int fWidth, fHeight;
 	public static Font font;
-	
+
 	public static void setSizing(int frameWidth, int frameHeight) {
 		fWidth = frameWidth;
 		fHeight = frameHeight;
-		font = new Font("Verdana", Font.BOLD, (int)(fWidth * 0.02));
+		font = new Font("Verdana", Font.BOLD, (int) (fWidth * 0.02));
 	}
 
-	public JavaLabel(String pngName, Object location, double x, double y, int width, int height, HashMap<String, JLabel> list,
-			Integer layer, String route) {// CONSTRUCTS JLABEL
-		super(new ImageIcon(new ImageIcon(route + pngName + ".png").getImage().getScaledInstance(width * fWidth / 1000,
-				height * fHeight / 700, Image.SCALE_SMOOTH)), JLabel.CENTER);
-		this.setBounds((int)(fWidth * x / 1000), (int)(fHeight * y / 700), fWidth * width / 1000, fHeight * height / 700);
+	public JavaLabel(String pngName, Object location, double x, double y, double width, double height,
+			HashMap<String, JLabel> list, Integer layer, String route) {// CONSTRUCTS JLABEL
+		super(new ImageIcon(new ImageIcon(route + pngName + ".png").getImage()
+				.getScaledInstance((int) (width * fWidth / 1000), (int) (height * fHeight / 700), Image.SCALE_SMOOTH)),
+				JLabel.CENTER);
+		this.setBounds((int) (fWidth * x / 1000), (int) (fHeight * y / 700), (int) (fWidth * width / 1000),
+				(int) (fHeight * height / 700));
 		try {
 			((JavaLayeredPane) location).add(this, layer);
 		} catch (Exception e) {

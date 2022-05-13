@@ -1,8 +1,10 @@
 package inputClasses;
 
 import java.awt.event.*;
+
 import javax.swing.JLabel;
 import newsArticleSpeedTyping.*;
+import rss.RssData;
 
 public class Mouse implements MouseListener {
 
@@ -12,40 +14,124 @@ public class Mouse implements MouseListener {
 
 	public void mousePressed(MouseEvent e) {
 		((ProgramButton) e.getSource()).buttonIconSwitch(2, true); // buttonIcon_Pressed.png
+		switch (((ProgramButton) (e.getSource())).name) { // for scrolling leaderboard
+		case "/\\": { // move leaderboard up
+			MainMenu.boardMovementDir = 1;
+			break;
+		}
+		case "\\/": { // move leaderboard down
+			MainMenu.boardMovementDir = -1;
+			break;
+		}
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		ProgramButton button = (ProgramButton) e.getSource();
-		if (MainMenu.menuScreen.isVisible()) {// FOR MENU BUTTONS
-
-			if (button.name == "READ ARTICLES" && button.inZone) { // OPENS RACE PANE
+		if (button.inZone) {
+			switch (button.name) {
+			case "READ ARTICLES": {
 				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("play").xStart,
 						-MainMenu.layers.get("play").yStart);
 				menuSelect("play");
-
-			} else if (button.name == "PLAY" && button.inZone) {// ACTIVATES THE GAME
-				new GameScreen(MainMenu.difficulty, MainMenu.words);
+				break;
+			}
+			case "PLAY": {
+				new GameScreen();
 				MainMenu.menuScreen.setVisible(false);
 				MainMenu.menuTimer.stop();
-
-			} else if (button.name == "INFO PAGE" && button.inZone) { // OPENS INFO
+				break;
+			}
+			case "INFO PAGE": {
 				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("info").xStart,
 						-MainMenu.layers.get("info").yStart);
 				menuSelect("info");
-
-			} else if (button.name == "BACK" && button.inZone) { // RETURNS TO MAIN MENU
+				break;
+			}
+			case "BACK": {
 				menuSelect("menu");
-
-			} else if (button.name == "EXIT" && button.inZone) {
+				break;
+			}
+			case "NEWS SELECT": {
+				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("news").xStart,
+						-MainMenu.layers.get("news").yStart);
+				menuSelect("news");
+				break;
+			}
+			case "Use File": {
+				MainMenu.switchToFile();
+				break;
+			}
+			case "Delfi(sabiedriba)": {
+				if (!MainMenu.selectedNewsSiteName.equals(button.name)) {
+					MainMenu.switchNews("https://www.delfi.lv/rss/?channel=sabiedriba", button.name);
+				}
+				break;
+			}
+			case "Delfi(bizness)": {
+				if (!MainMenu.selectedNewsSiteName.equals(button.name)) {
+					MainMenu.switchNews("https://www.delfi.lv/rss/?channel=bizness", button.name);
+				}
+				break;
+			}
+			case "Delfi(visas)": {
+				if (!MainMenu.selectedNewsSiteName.equals(button.name)) {
+					MainMenu.switchNews("https://www.delfi.lv/rss/?channel=delfi", button.name);
+				}
+				break;
+			}
+			case "EXIT": {
 				System.exit(0);
-
-			} else {
+				break;
+			}
+			case "RESET": {
+				gameClose();
+				new GameScreen();
+				break;
+			}
+			case "BACK TO MENU": {
+				gameClose();
+				MainMenu.menuScreen.setVisible(true);
+				MainMenu.menuTimer.start();
+				break;
+			}
+			case "Select NR": {
+				int indexNR = 0;
+				try {
+					indexNR = Integer.parseInt(MainMenu.inputFieldArticleNR.getText()) - 1;
+					if (indexNR >= 0 && indexNR < MainMenu.articleCount) {
+						MainMenu.articleIndex = indexNR;
+					} else {
+						MainMenu.labels.get("NRerrText")
+								.setText("CHOOSE NUMBER BETWEEN 1 AND " + MainMenu.articleCount + "!");
+						break;
+					}
+				} catch (Exception e2) {
+					MainMenu.labels.get("NRerrText").setText("ENTER A VALID NUMBER!");
+					break;
+				}
+				MainMenu.labels.get("CurrentArticleNR").setText("Currently selected article number : " + (indexNR + 1));
+				MainMenu.articleLink.setText(RssData.linkData.get(indexNR));
+				MainMenu.labels.get("NRerrText").setText("");
+				break;
+			}
+			case "/\\": {
+				MainMenu.boardMovementDir = 0;
+				break;
+			}
+			case "\\/": {
+				MainMenu.boardMovementDir = 0;
+				break;
+			}
+			case "": {
+				break;
+			}
+			default:// CHECKS FOR CHOSEN DIFFICULTY
 				int i = 0;
-				for (String difficultyChoice : MainMenu.difficultyButtons.keySet()) { // CHECKS FOR CHOSEN DIFFICULTY
+				for (String difficultyChoice : MainMenu.difficultyButtons.keySet()) {
 					if (button.name.equals(difficultyChoice)) {
 						((ProgramButton) MainMenu.difficultyButtons.get(difficultyChoice)).selected = true;
 						MainMenu.difficulty = button.name;
-						break;
 					} else {
 						((ProgramButton) MainMenu.difficultyButtons.get(difficultyChoice)).selected = false;
 						((ProgramButton) MainMenu.difficultyButtons.get(difficultyChoice)).buttonIconSwitch(0, false);
@@ -55,19 +141,12 @@ public class Mouse implements MouseListener {
 				if (i == MainMenu.difficultyButtons.keySet().size()) {
 					((ProgramButton) MainMenu.difficultyButtons.get(MainMenu.difficulty)).selected = true;
 				}
+				MainMenu.labels.get("difficultySetting").setText("Current difficulty : " + MainMenu.difficulty);
+				break;
 			}
-		} else {// FOR GAME BUTTONS
-			if (button.name == "RESET" && button.inZone) { // RESTARTS THE GAME
-				gameClose();
-				new GameScreen(MainMenu.difficulty, MainMenu.words);
-			} else if (button.name == "BACK TO MENU" && button.inZone) { // CLOSES GAME, OPENS MENU
-				gameClose();
-				MainMenu.menuScreen.setVisible(true);
-				MainMenu.menuTimer.start();
+			if (!button.selected) {
+				button.buttonIconSwitch(1, true); // buttonIcon_ON.png
 			}
-		}
-		if (button.inZone && !button.selected) {
-			button.buttonIconSwitch(1, true); // buttonIcon_ON.png
 		}
 	}
 

@@ -32,16 +32,20 @@ public class JavaLayeredPane extends JLayeredPane {
 		this.xStart = x;
 		this.yStart = y;
 	}
+	
+	public void move() {
+		this.setLocation(moveScreen(this.getX(), this.xStart), moveScreen(this.getY(), this.yStart));
+	}
 
-	public void Move() {
+	public void checkMovement() {
 		if (this.selected) {
-			this.setLocation(moveScreens(this.getX(), 0), moveScreens(this.getY(), 0));
+			this.setLocation(moveScreen(this.getX(), 0), moveScreen(this.getY(), 0));
 		} else {
-			this.setLocation(moveScreens(this.getX(), this.xStart), moveScreens(this.getY(), this.yStart));
+			this.setLocation(moveScreen(this.getX(), this.xStart), moveScreen(this.getY(), this.yStart));
 		}
 	}
 
-	public int moveScreens(int currentPos, int destinationPos) { // MOVES LAYER
+	public int moveScreen(int currentPos, int destinationPos) { // MOVES LAYER
 		if (currentPos != destinationPos) {
 			int direction = -1;
 			if (currentPos - destinationPos < 0) {

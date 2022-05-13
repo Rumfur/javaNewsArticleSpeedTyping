@@ -30,15 +30,19 @@ public class GameScreen implements ActionListener {
 	public static HashMap<String, JLabel> labels = new HashMap<String, JLabel>();
 	public static ArrayList<FallingWord> fallingWords = new ArrayList<FallingWord>();
 
-	public GameScreen(String difficulty, ArrayList<String> data) {
-		setupParameters(data);
+	public GameScreen() {
+		if (MainMenu.useFile) {
+			setupParameters(DataGetter.getData(new File(MainMenu.route + MainMenu.textFile))); // gets file data
+		} else {
+			setupParameters(DataGetter.getData(MainMenu.articleIndex)); // gets rss feed data
+		}
 		setupScreen();
-		setupParameters2(difficulty);
+		setupParameters2(MainMenu.difficulty);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (textField.getLineCount() == 2) { // basically : when user presses enter
-			String word = textField.getText().substring(0, textField.getText().length() - 1); // removes \n from String
+		if (textField.getLineCount() == 2) { // is true when user presses enter
+			String word = textField.getText().replace("\n", ""); // removes \n from String
 			if (!end) {
 				checkInput(word); // checks if input matches any falling word
 				textField.setText("");
@@ -72,28 +76,28 @@ public class GameScreen implements ActionListener {
 					}
 				}
 				if (wordIndex == words.size() && fallingWords.size() == 0) { // END OF GAME
-					end = true;
-					gameButtons.get("RESET").setLocation(0, fHeight);
-					gameButtons.get("BACK TO MENU").setLocation(0, fHeight);
-					speed[0] = df.format((double) wordsWritten / ((double) (time / 1000)));
-					speed[1] = df.format((double) wordsWritten / ((double) (time / 1000)) * 60);
-					speed[2] = df.format((double) charsWritten / ((double) (time / 1000)));
-					speed[3] = df.format((double) charsWritten / ((double) (time / 1000)) * 60);
-					new JavaLabel("nameInfo", labels.get("bottomLabel"), fWidth * 0.58, 0, 400, 70, labels, 10,
-							routeGame);
-					new JavaLabel("wordSpeed", layers.get("leaderboard"), 0, fHeight * 0.3, 1000, 100, labels, 10,
-							routeGame);
-					new JavaLabel("charSpeed", layers.get("leaderboard"), 0, fHeight * 0.4, 1000, 100, labels, 10,
-							routeGame);
-					labels.get("nameInfo").setText("Please, enter your name!");
-					labels.get("wordSpeed").setText(speed[0] + " words per second / " + speed[1] + " words per minute");
-					labels.get("charSpeed")
-							.setText(speed[2] + " charecters per second / " + speed[3] + " charecters per minute");
-					layers.get("leaderboard").setLocation(0, 0);
+					endGame();
 				}
 				labels.get("timer").setText(df.format((double) time / 1000) + "");
 			}
 		}
+	}
+
+	public static void endGame() {
+		end = true;
+		gameButtons.get("RESET").setLocation(0, fHeight);
+		gameButtons.get("BACK TO MENU").setLocation(0, fHeight);
+		speed[0] = df.format((double) wordsWritten / ((double) (time / 1000)));
+		speed[1] = df.format((double) wordsWritten / ((double) (time / 1000)) * 60);
+		speed[2] = df.format((double) charsWritten / ((double) (time / 1000)));
+		speed[3] = df.format((double) charsWritten / ((double) (time / 1000)) * 60);
+		new JavaLabel("nameInfo", labels.get("bottomLabel"), fWidth * 0.58, 0, 400, 70, labels, 10, routeGame);
+		new JavaLabel("wordSpeed", layers.get("leaderboard"), 0, fHeight * 0.3, 1000, 100, labels, 10, routeGame);
+		new JavaLabel("charSpeed", layers.get("leaderboard"), 0, fHeight * 0.4, 1000, 100, labels, 10, routeGame);
+		labels.get("nameInfo").setText("Please, enter your name!");
+		labels.get("wordSpeed").setText(speed[0] + " words per second / " + speed[1] + " words per minute");
+		labels.get("charSpeed").setText(speed[2] + " charecters per second / " + speed[3] + " charecters per minute");
+		layers.get("leaderboard").setLocation(0, 0);
 	}
 
 	public static void spawnWord() {
