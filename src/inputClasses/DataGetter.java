@@ -1,4 +1,4 @@
-package newsArticleSpeedTyping;
+package inputClasses;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ public class DataGetter {
 		return words;
 	}
 
-	
 	public static ArrayList<String> getData(File file) {
 		if (file.exists() != true) {
 			System.out.println("DATA FILE NOT FOUND!\nCREATING NEW FILE");

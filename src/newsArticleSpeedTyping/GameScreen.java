@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Calendar;
 
 import inputClasses.*;
+import rss.RssData;
 
 public class GameScreen implements ActionListener {
 	public static String routeGame = MainMenu.route + "//GameAssets//";
@@ -42,27 +43,11 @@ public class GameScreen implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (textField.getLineCount() == 2) { // is true when user presses enter
-			String word = textField.getText().replace("\n", ""); // removes \n from String
-			if (!end) {
-				checkInput(word); // checks if input matches any falling word
-				textField.setText("");
-			} else {
-				MainMenu.updateLeaderboard(speed[1] + " |" + speed[3] + "|" + word + "\n",
-						new File(MainMenu.leaderboardRoute));
-				Mouse.gameClose();
-				MainMenu.menuScreen.setVisible(true);
-				MainMenu.menuTimer.start();
-			}
+			checkInput();
 		}
-		if (!end) {
+		if (!end) { // if game is running
 			time = Calendar.getInstance().getTimeInMillis() - startTime;
-			if (time / 10 < 0) {
-				labels.get("timer").setText((int) (-time / 1000 + 1) + "");
-				if (time / 100 == 0) {
-					labels.get("timer").setLocation(0, (int) (fHeight * 0.7));
-					startTime = Calendar.getInstance().getTimeInMillis();
-				}
-			} else {
+			if (time / 10 > 0) { // main game
 				if (spawnTimer >= spawnInterval || fallingWords.size() == 0) {
 					spawnWord();
 				}
@@ -79,24 +64,85 @@ public class GameScreen implements ActionListener {
 					endGame();
 				}
 				labels.get("timer").setText(df.format((double) time / 1000) + "");
+			} else { // start of game countdown
+				labels.get("timer").setText((int) (-time / 1000 + 1) + "");
+				if (time / 100 == 0) { // end of countdown
+					labels.get("timer").setLocation(0, (int) (fHeight * 0.7));
+					startTime = Calendar.getInstance().getTimeInMillis();
+				}
 			}
 		}
 	}
 
+	public static void checkInput() {
+		String word = textField.getText().replace("\n", ""); // removes \n from String
+		if (!end) {
+			matchWord(word); // checks if input matches any falling word
+			textField.setText(""); // resets text field
+		} else { // when the game has ended
+			if (checkNameValidity(word)) {
+				MainMenu.updateLeaderboard(speed[1] + " | " + speed[3] + " | " + word + "\n",
+						new File(MainMenu.leaderboardRoute));
+				textField.setEditable(false);
+				if (!MainMenu.useFile) {
+					labels.get("writtenWords").setVisible(false);
+					labels.get("mistakesBox").setVisible(false);
+					new ProgramButton("PREVIOUS ARTICLE", labels.get("bottomLabel"), 0, 0, 300, 70,
+							gameButtons);
+					new ProgramButton("NEXT ARTICLE", labels.get("bottomLabel"), fWidth * 0.3, 0, 300, 70, gameButtons);
+				}
+				labels.get("nameInfo").setVisible(false);
+				textField.setVisible(false);
+				labels.get("textBox").setVisible(false);
+			}
+		}
+	}
+
+	public static boolean checkNameValidity(String name) {
+		textField.setText(textField.getText().replace("\n", ""));
+		if (name.isEmpty()) {
+			labels.get("nameInfo").setText("Name cannot be empty!");
+			return false;
+		}
+		if (name.length() > 20) {
+			labels.get("nameInfo").setText("Name limited to 20 charecters!");
+			return false;
+		}
+		return true;
+	}
+
 	public static void endGame() {
 		end = true;
-		gameButtons.get("RESET").setLocation(0, fHeight);
-		gameButtons.get("BACK TO MENU").setLocation(0, fHeight);
 		speed[0] = df.format((double) wordsWritten / ((double) (time / 1000)));
 		speed[1] = df.format((double) wordsWritten / ((double) (time / 1000)) * 60);
 		speed[2] = df.format((double) charsWritten / ((double) (time / 1000)));
 		speed[3] = df.format((double) charsWritten / ((double) (time / 1000)) * 60);
-		new JavaLabel("nameInfo", labels.get("bottomLabel"), fWidth * 0.58, 0, 400, 70, labels, 10, routeGame);
-		new JavaLabel("wordSpeed", layers.get("leaderboard"), 0, fHeight * 0.3, 1000, 100, labels, 10, routeGame);
-		new JavaLabel("charSpeed", layers.get("leaderboard"), 0, fHeight * 0.4, 1000, 100, labels, 10, routeGame);
+		// info labels
+		new JavaLabel("nameInfo", layers.get("leaderboard"), fWidth * 0.2, fHeight * 0.77, 380, 50, labels, 10,
+				routeGame);
 		labels.get("nameInfo").setText("Please, enter your name!");
-		labels.get("wordSpeed").setText(speed[0] + " words per second / " + speed[1] + " words per minute");
-		labels.get("charSpeed").setText(speed[2] + " charecters per second / " + speed[3] + " charecters per minute");
+		new JavaLabel("wordSpeed", layers.get("leaderboard"), 0, fHeight * 0.3, 1000, 100, labels, 10, routeGame);
+		labels.get("wordSpeed")
+				.setText("Your word speed is " + speed[0] + " words per second / " + speed[1] + " words per minute!");
+		new JavaLabel("charSpeed", layers.get("leaderboard"), 0, fHeight * 0.4, 1000, 100, labels, 10, routeGame);
+		labels.get("charSpeed").setText("Your charecter speed is " + speed[2] + " charecters per second / " + speed[3]
+				+ " charecters per minute!");
+		new JavaLabel("word count", layers.get("leaderboard"), 0, fHeight * 0.5, 1000, 100, labels, 10, routeGame);
+		labels.get("word count")
+				.setText("Your mistake count is " + mistakes + " and written word count = " + wordsWritten + "!");
+		if (!MainMenu.useFile) { // if a news article is used
+			new JavaLabel("linkField", layers.get("leaderboard"), 0, fHeight * 0.1, fWidth * 0.98, 60, labels, 2,
+					routeGame);
+			JTextArea articleLink = new JTextArea();
+			articleLink.setBounds(10, 2, (int) (fWidth * 0.96), 60);
+			articleLink.setForeground(Color.white);
+			articleLink.setFont(new Font("Verdana", Font.BOLD, 20));
+			articleLink.setOpaque(false);
+			articleLink.setEditable(false);
+			articleLink.setLineWrap(true);
+			labels.get("linkField").add(articleLink);
+			articleLink.setText(RssData.linkData.get(MainMenu.articleIndex));
+		}
 		layers.get("leaderboard").setLocation(0, 0);
 	}
 
@@ -108,7 +154,7 @@ public class GameScreen implements ActionListener {
 		}
 	}
 
-	public static void checkInput(String word) {
+	public static void matchWord(String word) {
 		for (int i = 0; i < fallingWords.size(); i++) { // goes through all spawned words
 			if (fallingWords.get(i).getWord().equals(word)) { // checks if player input matches word
 				i -= fallingWords.get(i).despawn(fallingWords);
@@ -146,8 +192,7 @@ public class GameScreen implements ActionListener {
 		textField.setOpaque(false);
 		labels.get("textBox").add(textField);
 
-		new JavaLayeredPane("leaderboard", layers.get("game"), 0, -fHeight, fWidth, fHeight, layers, 1); // fHeight -
-																											// labels.get("bottomLabel").getHeight()
+		new JavaLayeredPane("leaderboard", layers.get("game"), 0, -fHeight, fWidth, fHeight, layers, 1);
 		new JavaLabel("scoreBackground", layers.get("leaderboard"), 0, 0, fWidth, fHeight, labels, 0, routeGame);
 	}
 

@@ -11,36 +11,37 @@ import javax.swing.JLabel;
 
 import inputClasses.JavaLabel;
 
-public class FallingWord extends JLabel{
+public class FallingWord extends JLabel {
 
 	private static final long serialVersionUID = 1L;
 	static Random random = new Random();
-	static int fWidth , fHeight;
+	static int fWidth, fHeight;
 
 	public static void setSizing(int frameWidth, int frameHeight) {
 		fWidth = frameWidth;
 		fHeight = frameHeight;
 	}
-	
+
 	String word;
 	double y;
 	Font font = JavaLabel.font;
-	
+
 	public FallingWord(int x, int y, int width, int height, String name, ArrayList<FallingWord> list, int layer,
 			String route) {
 		super(new ImageIcon(new ImageIcon(route + name + ".png").getImage().getScaledInstance(fWidth * width / 1000,
 				fHeight * width / 1000, Image.SCALE_SMOOTH)), JLabel.CENTER);
 		GameScreen.layers.get("game").add(this, (Integer) layer);
-		this.y = - fHeight * height / 2000;
+		this.y = -fHeight * height / 2000;
 		this.word = name;
 		this.setHorizontalTextPosition(JLabel.CENTER);
 		this.setForeground(Color.white);
 		this.setFont(font);
 		this.setText(name);
-		this.setBounds((random.nextInt(fWidth - fWidth * width / 1000) + 1), y, fWidth * width / 1000, fHeight * height / 1000);
+		this.setBounds((random.nextInt(fWidth - fWidth * width / 1000) + 1), y, fWidth * width / 1000,
+				fHeight * height / 1000);
 		list.add(this);
 	}
-	
+
 	public String getWord() {
 		return this.word;
 	}
@@ -60,8 +61,13 @@ public class FallingWord extends JLabel{
 		return 1;
 	}
 
-	public void setPosition(double moveY) {
-		this.y += moveY/this.word.length();
-		this.setLocation(this.getX(), (int)this.y);
+	public void setPosition(double moveY) { 
+		// moves the object by a distance, depending on speed and word length
+		if (this.word.length() < 3) {
+			this.y += moveY / 3;
+		} else {
+			this.y += moveY / this.word.length();
+		}
+		this.setLocation(this.getX(), (int) this.y);
 	}
 }

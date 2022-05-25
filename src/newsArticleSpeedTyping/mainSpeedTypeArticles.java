@@ -12,7 +12,6 @@ public class mainSpeedTypeArticles {
 			frameHeight += 40;
 			System.getProperty("os.name");
 		}
-		
 		FallingWord.setSizing(frameWidth, frameHeight);
 		JavaLabel.setSizing(frameWidth, frameHeight);
 		ProgramButton.setSizing(frameWidth, frameHeight);

@@ -89,6 +89,26 @@ public class Mouse implements MouseListener {
 				new GameScreen();
 				break;
 			}
+			case "PREVIOUS ARTICLE": {
+				if (MainMenu.articleIndex == 0) {
+					MainMenu.articleIndex = MainMenu.articleCount - 1;
+				} else {
+					MainMenu.articleIndex -= 1;
+				}
+				gameClose();
+				new GameScreen();
+				break;
+			}
+			case "NEXT ARTICLE": {
+				if (MainMenu.articleIndex == MainMenu.articleCount) {
+					MainMenu.articleIndex = 0;
+				} else {
+					MainMenu.articleIndex += 1;
+				}
+				gameClose();
+				new GameScreen();
+				break;
+			}
 			case "BACK TO MENU": {
 				gameClose();
 				MainMenu.menuScreen.setVisible(true);

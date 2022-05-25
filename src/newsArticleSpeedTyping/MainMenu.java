@@ -2,11 +2,16 @@ package newsArticleSpeedTyping;
 
 import javax.swing.*;
 import javax.swing.Timer;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.*;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import inputClasses.JavaLabel;
 import inputClasses.JavaLayeredPane;
@@ -20,7 +25,7 @@ public class MainMenu implements ActionListener {
 	public static String difficulty = "EASY", leaderboardText = "", selectedNewsSiteName;
 	public static JFrame menuScreen;
 	public static Timer menuTimer;
-	public static int fWidth, fHeight, articleIndex, articleCount, boardMovementDir = 0, boardHeight = 0;
+	public static int fWidth, fHeight, articleIndex, articleCount, boardMovementDir, boardHeight;
 	public static boolean useFile;
 	public static JTextArea inputFieldArticleNR, articleLink;
 	public static HashMap<String, ProgramButton> menuButtons = new HashMap<String, ProgramButton>();
@@ -32,6 +37,8 @@ public class MainMenu implements ActionListener {
 	public MainMenu(int frameWidth, int frameHeight) {
 		articleIndex = 0;
 		articleCount = 0;
+		boardMovementDir = 0;
+		boardHeight = 20;
 		useFile = false;
 		readLeaderboardFile(new File(leaderboardRoute));
 		fWidth = frameWidth;
@@ -42,7 +49,7 @@ public class MainMenu implements ActionListener {
 		setupLabels();
 		difficultyButtons.get(difficulty).selected = true;
 		difficultyButtons.get(difficulty).buttonIconSwitch(2, true);
-		switchNews("https://www.delfi.lv/rss/?channel=sabiedriba", "Delfi(sabiedriba)"); // default site is delfi
+		switchNews("https://www.delfi.lv/rss/?channel=sabiedriba", "Delfi(sabiedriba)"); // default site
 		menuTimer = new Timer(10, this);
 		menuTimer.start();
 	}
@@ -58,12 +65,56 @@ public class MainMenu implements ActionListener {
 			}
 		}
 		if (layers.get("play").selected) {
-			if (boardMovementDir == 1 && leaderboardField.getY() + 10 * boardMovementDir < 25) {
-				leaderboardField.setLocation(leaderboardField.getX(), leaderboardField.getY() + 10 * boardMovementDir);
+			if (boardMovementDir == 1) { // if board is moving upwards
+				if (leaderboardField.getY() + 10 * boardMovementDir < 25) {
+					leaderboardField.setLocation(leaderboardField.getX(),
+							leaderboardField.getY() + 10 * boardMovementDir);
+				}
 			}
-			if (boardMovementDir == -1
-					&& leaderboardField.getY() + leaderboardField.getHeight() + 10 * boardMovementDir > 35) {
-				leaderboardField.setLocation(leaderboardField.getX(), leaderboardField.getY() + 10 * boardMovementDir);
+			if (boardMovementDir == -1) { // if board is moving downwards
+				if (leaderboardField.getY() + leaderboardField.getHeight() + 10 * boardMovementDir > 50) {
+					leaderboardField.setLocation(leaderboardField.getX(),
+							leaderboardField.getY() + 10 * boardMovementDir);
+				}
+			}
+		}
+	}
+
+	public static void sortLeaderboard() {
+		String[] leaderRowTexts = leaderboardText.split("\n");
+		leaderboardText = "";
+		HashMap<String, Double> leaderData = new HashMap<String, Double>();
+		Double[] wpmValues = new Double[leaderRowTexts.length];
+		int i = 0;
+		for (String rowText : leaderRowTexts) {
+			rowText = rowText.substring(rowText.indexOf("|") + 1); // removes standings number
+			double wpm = 0;
+			try {
+				wpm = Double.parseDouble(rowText.substring(0, rowText.indexOf("|")).replace(",", "."));
+				wpmValues[i] = wpm;
+			} catch (Exception e) {
+				continue;
+			}
+			i++;
+			leaderData.put(rowText.substring(rowText.indexOf("|")), wpm);
+		}
+		double tempValue = 0;
+		for (int k = 0; k < wpmValues.length; k++) {
+			for (int j = 0; j < wpmValues.length - 1; j++) {
+				if (wpmValues[j + 1] > wpmValues[j]) {
+					tempValue = wpmValues[j + 1];
+					wpmValues[j + 1] = wpmValues[j];
+					wpmValues[j] = tempValue;
+				}
+			}
+		}
+		for (int j = 0; j < wpmValues.length; j++) {
+			for (String name : leaderData.keySet()) {
+				if (leaderData.get(name).equals(wpmValues[j])) {
+					leaderboardText += (j+1) + " |" + (double)(wpmValues[j]) + name + "\n";
+					leaderData.remove(name);
+					break;
+				}
 			}
 		}
 	}
@@ -81,12 +132,13 @@ public class MainMenu implements ActionListener {
 			Scanner fileReader = new Scanner(file, "UTF-8");
 			while (fileReader.hasNextLine()) {
 				leaderboardText += fileReader.nextLine() + "\n";
-				boardHeight += 20;
+				boardHeight += 19;
 			}
 			fileReader.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		sortLeaderboard();
 	}
 
 	public static void switchNews(String link, String newsSiteName) {
@@ -107,14 +159,13 @@ public class MainMenu implements ActionListener {
 		labels.get("blackBar").setVisible(true);
 		menuButtons.get("Select NR").setVisible(false);
 		useFile = true;
-		labels.get("currentNews").setText("Currently selected : file " + textFile + ".");
+		labels.get("currentNews").setText("Currently selected : file \"" + textFile + "\".");
 	}
 
 	static void updateLeaderboard(String leaderboardEntry, File file) {
-		System.out.println(leaderboardField.getHeight());
-		leaderboardField.setBounds(0, 0, leaderboardField.getWidth(), leaderboardField.getHeight() + 20);
-		System.out.println(leaderboardField.getHeight());
-		leaderboardText += leaderboardEntry;
+		leaderboardField.setBounds(0, 0, leaderboardField.getWidth(), leaderboardField.getHeight() + 19);
+		leaderboardText += "0|" + leaderboardEntry;
+		sortLeaderboard();
 		try {
 			file.delete();
 			file.createNewFile();
@@ -122,18 +173,20 @@ public class MainMenu implements ActionListener {
 			System.out.println(e);
 		}
 		try {
-			boolean append = true;
-			FileWriter wrt = new FileWriter(file, append);
-			wrt.write(leaderboardText);
-			wrt.close();
+			Writer wrt = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+			try {
+				wrt.write(leaderboardText);
+			} finally {
+				wrt.close();
+			}
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
+		leaderboardField.setText("NR| WPM | CPM | Username\n" + leaderboardText);
 	}
 
-	static void setupLabels() {
-		// MENU
+	static void setupLabels() { // creates labels, buttons and textboxes
+		// MAIN MENU
 		new JavaLabel("menuBackground", layers.get("menu"), 0, 0, 1000, 700, labels, 0, routeMenu);
 		new ProgramButton("READ ARTICLES", layers.get("menu"), fWidth * 0.3, fHeight * 0.2, 400, 100, menuButtons);
 		new ProgramButton("INFO PAGE", layers.get("menu"), fWidth * 0.3, fHeight * 0.4, 400, 100, menuButtons);
@@ -162,7 +215,7 @@ public class MainMenu implements ActionListener {
 		leaderboardField.setOpaque(false);
 		leaderboardField.setEditable(false);
 		leaderboardField.setFont(new Font("Verdana", Font.BOLD, 14));
-		leaderboardField.setText("WPM|CPM|Username\n" + leaderboardText);
+		leaderboardField.setText("NR|WPM|CPM|Username\n" + leaderboardText);
 		labels.get("leaderBoard").add(leaderboardField);
 		// NEWS
 		new JavaLabel("newsBackground", layers.get("news"), 0, 0, 1000, 700, labels, 1, routeMenu);

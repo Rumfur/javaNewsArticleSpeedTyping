@@ -15,7 +15,7 @@ public class RssData {
 		RSSFeedParser parser = new RSSFeedParser(site);
         Feed feed = parser.readFeed();
         for (FeedMessage message : feed.getMessages()) {
-        	descriptionData.add(message.getDescription());
+        	descriptionData.add(message.getDescription().replace("&quot;", "\""));
         	linkData.add(message.getLink());
         }
         MainMenu.articleCount = descriptionData.size();
