@@ -35,5 +35,5 @@ public class JavaLabel extends JLabel {
 		this.setFont(new Font("Verdana", Font.BOLD, fWidth * 20 / 1000));
 		list.put(pngName, this);
 	}
-
 }
+//38 lines, 1 constructor, 1 method

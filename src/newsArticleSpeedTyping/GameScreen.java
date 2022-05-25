@@ -87,8 +87,7 @@ public class GameScreen implements ActionListener {
 				if (!MainMenu.useFile) {
 					labels.get("writtenWords").setVisible(false);
 					labels.get("mistakesBox").setVisible(false);
-					new ProgramButton("PREVIOUS ARTICLE", labels.get("bottomLabel"), 0, 0, 300, 70,
-							gameButtons);
+					new ProgramButton("PREVIOUS ARTICLE", labels.get("bottomLabel"), 0, 0, 300, 70, gameButtons);
 					new ProgramButton("NEXT ARTICLE", labels.get("bottomLabel"), fWidth * 0.3, 0, 300, 70, gameButtons);
 				}
 				labels.get("nameInfo").setVisible(false);
@@ -131,10 +130,10 @@ public class GameScreen implements ActionListener {
 		labels.get("word count")
 				.setText("Your mistake count is " + mistakes + " and written word count = " + wordsWritten + "!");
 		if (!MainMenu.useFile) { // if a news article is used
-			new JavaLabel("linkField", layers.get("leaderboard"), 0, fHeight * 0.1, fWidth * 0.98, 60, labels, 2,
+			new JavaLabel("linkField", layers.get("leaderboard"), 0, fHeight * 0.1, fWidth * 0.98, 80, labels, 2,
 					routeGame);
 			JTextArea articleLink = new JTextArea();
-			articleLink.setBounds(10, 2, (int) (fWidth * 0.96), 60);
+			articleLink.setBounds(10, 2, (int) (fWidth * 0.96), 80);
 			articleLink.setForeground(Color.white);
 			articleLink.setFont(new Font("Verdana", Font.BOLD, 20));
 			articleLink.setOpaque(false);
@@ -225,3 +224,4 @@ public class GameScreen implements ActionListener {
 		end = false;
 	}
 }
+//226 lines, 1 constructor, 9 methods

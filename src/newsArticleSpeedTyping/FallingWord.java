@@ -61,7 +61,7 @@ public class FallingWord extends JLabel {
 		return 1;
 	}
 
-	public void setPosition(double moveY) { 
+	public void setPosition(double moveY) {
 		// moves the object by a distance, depending on speed and word length
 		if (this.word.length() < 3) {
 			this.y += moveY / 3;
@@ -71,3 +71,4 @@ public class FallingWord extends JLabel {
 		this.setLocation(this.getX(), (int) this.y);
 	}
 }
+//73 lines, 1 constructor, 4 methods

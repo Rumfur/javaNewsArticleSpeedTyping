@@ -201,3 +201,4 @@ public class Mouse implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 	}
 }
+//203 lines, 1 constructor, 7 methods

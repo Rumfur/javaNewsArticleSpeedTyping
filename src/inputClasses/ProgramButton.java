@@ -58,5 +58,5 @@ public class ProgramButton extends JLabel {
 		this.setIcon(buttonIcon[iconNumber]);
 		this.inZone = inZone;
 	}
-
 }
+//61 lines, 1 constructor, 2 methods

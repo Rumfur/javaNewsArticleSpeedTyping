@@ -111,7 +111,7 @@ public class MainMenu implements ActionListener {
 		for (int j = 0; j < wpmValues.length; j++) {
 			for (String name : leaderData.keySet()) {
 				if (leaderData.get(name).equals(wpmValues[j])) {
-					leaderboardText += (j+1) + " |" + (double)(wpmValues[j]) + name + "\n";
+					leaderboardText += (j + 1) + " |" + (double) (wpmValues[j]) + name + "\n";
 					leaderData.remove(name);
 					break;
 				}
@@ -145,12 +145,17 @@ public class MainMenu implements ActionListener {
 		inputFieldArticleNR.setText((articleIndex + 1) + "");
 		labels.get("blackBar").setVisible(false);
 		menuButtons.get("Select NR").setVisible(true);
-		new RssData(link);
-		articleLink.setText(RssData.linkData.get(articleIndex));
-		selectedNewsSiteName = newsSiteName;
-		articleCount = RssData.descriptionData.size();
-		labels.get("currentNews").setText("Currently selected : " + selectedNewsSiteName + ".");
-		labels.get("articleNR").setText("There are " + articleCount + " articles in " + selectedNewsSiteName + ".");
+		try {
+			new RssData(link);
+			useFile = false;
+			articleLink.setText(RssData.linkData.get(articleIndex));
+			selectedNewsSiteName = newsSiteName;
+			articleCount = RssData.descriptionData.size();
+			labels.get("currentNews").setText("Currently selected : " + selectedNewsSiteName + ".");
+			labels.get("articleNR").setText("There are " + articleCount + " articles in " + selectedNewsSiteName + ".");
+		} catch (Exception e) {
+			switchToFile();
+		}
 	}
 
 	public static void switchToFile() {
@@ -193,7 +198,7 @@ public class MainMenu implements ActionListener {
 		new ProgramButton("EXIT", layers.get("menu"), fWidth * 0.3, fHeight * 0.6, 400, 100, menuButtons);
 		// INFO
 		new JavaLabel("infoBackground", layers.get("info"), 0, 0, 1000, 700, labels, 0, routeMenu);
-		new ProgramButton("BACK", layers.get("info"), fWidth * 0.3, fHeight * 0.6, 400, 50, menuButtons);
+		new ProgramButton("BACK", layers.get("info"), fWidth * 0.3, fHeight * 0.8, 400, 50, menuButtons);
 		// PLAY
 		new JavaLabel("playBackground", layers.get("play"), 0, 0, 1000, 700, labels, 1, routeMenu);
 		new ProgramButton("NEWS SELECT", layers.get("play"), fWidth * 0.1, fHeight * 0.05, 200, 50, menuButtons);
@@ -242,9 +247,9 @@ public class MainMenu implements ActionListener {
 		labels.get("CurrentArticleNR").setText("Currently selected article number : " + (articleIndex + 1));
 		new JavaLabel("NRerrText", layers.get("news"), fWidth * 0.4, fHeight * 0.82, 500, 50, labels, 2, routeMenu);
 		labels.get("NRerrText").setForeground(Color.red);
-		new JavaLabel("linkField", layers.get("news"), 0, fHeight * 0.7, fWidth * 0.98, 60, labels, 2, routeMenu);
+		new JavaLabel("linkField", layers.get("news"), 0, fHeight * 0.7, fWidth * 0.98, 80, labels, 2, routeMenu);
 		articleLink = new JTextArea();
-		articleLink.setBounds(10, 2, (int) (fWidth * 0.96), 60);
+		articleLink.setBounds(10, 2, (int) (fWidth * 0.96), 80);
 		articleLink.setForeground(Color.white);
 		articleLink.setFont(new Font("Verdana", Font.BOLD, 20));
 		articleLink.setOpaque(false);
@@ -273,3 +278,4 @@ public class MainMenu implements ActionListener {
 		return frame;
 	}
 }
+//280 lines, 1 constructor, 9 methods
