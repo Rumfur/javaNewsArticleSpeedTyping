@@ -28,16 +28,16 @@ public class JavaLayeredPane extends JLayeredPane {
 		list.put(name, this);
 	}
 
-	public void setSlidePoint(int x, int y) { // SETS LOCATION TO WHERE THE LAYER HAS TO SLIDE TO
+	public void setSlidePoint(int x, int y) { // SETS LOCATION TO WHERE THE pane HAS TO SLIDE TO
 		this.xStart = x;
 		this.yStart = y;
 	}
-	
-	public void move() {
+
+	public void setCoordinates() { // sets location of the pane
 		this.setLocation(moveScreen(this.getX(), this.xStart), moveScreen(this.getY(), this.yStart));
 	}
 
-	public void checkMovement() {
+	public void checkMovement() { // checks if pane is in corect possition
 		if (this.selected) {
 			this.setLocation(moveScreen(this.getX(), 0), moveScreen(this.getY(), 0));
 		} else {
@@ -45,7 +45,7 @@ public class JavaLayeredPane extends JLayeredPane {
 		}
 	}
 
-	public int moveScreen(int currentPos, int destinationPos) { // MOVES LAYER
+	public int moveScreen(int currentPos, int destinationPos) { // MOVES pane
 		if (currentPos != destinationPos) {
 			int direction = -1;
 			if (currentPos - destinationPos < 0) {
@@ -58,3 +58,4 @@ public class JavaLayeredPane extends JLayeredPane {
 		return currentPos;
 	}
 }
+//60 lines, 1 constructor, 4 methods

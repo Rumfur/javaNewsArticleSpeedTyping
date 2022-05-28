@@ -5,23 +5,24 @@ import java.util.ArrayList;
 import newsArticleSpeedTyping.MainMenu;
 
 public class RssData {
-	
-	 public static ArrayList<String> descriptionData = new ArrayList<String>();
-	 public static ArrayList<String> linkData = new ArrayList<String>();
-	
+
+	public static ArrayList<String> descriptionData = new ArrayList<String>();
+	public static ArrayList<String> linkData = new ArrayList<String>();
+
 	public RssData(String site) {
 		descriptionData.clear();
 		linkData.clear();
 		RSSFeedParser parser = new RSSFeedParser(site);
-        Feed feed = parser.readFeed();
-        for (FeedMessage message : feed.getMessages()) {
-        	descriptionData.add(message.getDescription().replace("&quot;", "\""));
-        	linkData.add(message.getLink());
-        }
-        MainMenu.articleCount = descriptionData.size();
+		Feed feed = parser.readFeed();
+		for (FeedMessage message : feed.getMessages()) {
+			descriptionData.add(message.getDescription().replace("&quot;", "\""));
+			linkData.add(message.getLink());
+		}
+		MainMenu.articleCount = descriptionData.size();
 	}
-	
-	public static String getDescription(int index){
+
+	public static String getDescription(int index) {
 		return descriptionData.get(index);
 	}
 }
+//27 lines, 1 constructor, 1 method

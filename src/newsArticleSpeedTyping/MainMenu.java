@@ -54,18 +54,18 @@ public class MainMenu implements ActionListener {
 		menuTimer.start();
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) { //method used by timer object
 		for (String layer : layers.keySet()) {
 			layers.get(layer).checkMovement(); // moves background if user switches screens
 		}
 		if (layers.get("news").selected) {
 			String nrText = inputFieldArticleNR.getText();
-			if (nrText.length() > 5) {
+			if (nrText.length() > 5) { // prevents user to enter too big of a number
 				inputFieldArticleNR.setText(nrText.substring(0, nrText.length() - 1));
 			}
 		}
 		if (layers.get("play").selected) {
-			if (boardMovementDir == 1) { // if board is moving upwards
+			if (boardMovementDir == 1) { // if leaderboard is moving upwards
 				if (leaderboardField.getY() + 10 * boardMovementDir < 25) {
 					leaderboardField.setLocation(leaderboardField.getX(),
 							leaderboardField.getY() + 10 * boardMovementDir);
@@ -86,7 +86,7 @@ public class MainMenu implements ActionListener {
 		HashMap<String, Double> leaderData = new HashMap<String, Double>();
 		Double[] wpmValues = new Double[leaderRowTexts.length];
 		int i = 0;
-		for (String rowText : leaderRowTexts) {
+		for (String rowText : leaderRowTexts) { // divides leaderboard data into arrays for sorting
 			rowText = rowText.substring(rowText.indexOf("|") + 1); // removes standings number
 			double wpm = 0;
 			try {
@@ -99,7 +99,7 @@ public class MainMenu implements ActionListener {
 			leaderData.put(rowText.substring(rowText.indexOf("|")), wpm);
 		}
 		double tempValue = 0;
-		for (int k = 0; k < wpmValues.length; k++) {
+		for (int k = 0; k < wpmValues.length; k++) { // sorts "words per minute" values
 			for (int j = 0; j < wpmValues.length - 1; j++) {
 				if (wpmValues[j + 1] > wpmValues[j]) {
 					tempValue = wpmValues[j + 1];
@@ -108,10 +108,10 @@ public class MainMenu implements ActionListener {
 				}
 			}
 		}
-		for (int j = 0; j < wpmValues.length; j++) {
+		for (int j = 0; j < wpmValues.length; j++) { // reconstructs leaderboard tekst with sorted order
 			for (String name : leaderData.keySet()) {
 				if (leaderData.get(name).equals(wpmValues[j])) {
-					leaderboardText += (j+1) + " |" + (double)(wpmValues[j]) + name + "\n";
+					leaderboardText += (j + 1) + " |" + (double) (wpmValues[j]) + name + "\n";
 					leaderData.remove(name);
 					break;
 				}
@@ -142,15 +142,27 @@ public class MainMenu implements ActionListener {
 	}
 
 	public static void switchNews(String link, String newsSiteName) {
-		inputFieldArticleNR.setText((articleIndex + 1) + "");
 		labels.get("blackBar").setVisible(false);
 		menuButtons.get("Select NR").setVisible(true);
-		new RssData(link);
-		articleLink.setText(RssData.linkData.get(articleIndex));
-		selectedNewsSiteName = newsSiteName;
-		articleCount = RssData.descriptionData.size();
-		labels.get("currentNews").setText("Currently selected : " + selectedNewsSiteName + ".");
-		labels.get("articleNR").setText("There are " + articleCount + " articles in " + selectedNewsSiteName + ".");
+		labels.get("NRerrText").setText("");
+		try {
+			new RssData(link);
+			useFile = false;
+			try {
+				articleLink.setText(RssData.linkData.get(articleIndex));
+			} catch (Exception e) { // if new website doesn't have an article at selected index, index is reset.
+				articleIndex = 0;
+				labels.get("CurrentArticleNR").setText("Currently selected article number : " + (articleIndex + 1));
+				articleLink.setText(RssData.linkData.get(articleIndex));
+			}
+			inputFieldArticleNR.setText((articleIndex + 1) + "");
+			selectedNewsSiteName = newsSiteName;
+			articleCount = RssData.descriptionData.size();
+			labels.get("currentNews").setText("Currently selected : " + selectedNewsSiteName + ".");
+			labels.get("articleNR").setText("There are " + articleCount + " articles in " + selectedNewsSiteName + ".");
+		} catch (Exception e) {
+			switchToFile();
+		}
 	}
 
 	public static void switchToFile() {
@@ -193,7 +205,7 @@ public class MainMenu implements ActionListener {
 		new ProgramButton("EXIT", layers.get("menu"), fWidth * 0.3, fHeight * 0.6, 400, 100, menuButtons);
 		// INFO
 		new JavaLabel("infoBackground", layers.get("info"), 0, 0, 1000, 700, labels, 0, routeMenu);
-		new ProgramButton("BACK", layers.get("info"), fWidth * 0.3, fHeight * 0.6, 400, 50, menuButtons);
+		new ProgramButton("BACK", layers.get("info"), fWidth * 0.3, fHeight * 0.8, 400, 50, menuButtons);
 		// PLAY
 		new JavaLabel("playBackground", layers.get("play"), 0, 0, 1000, 700, labels, 1, routeMenu);
 		new ProgramButton("NEWS SELECT", layers.get("play"), fWidth * 0.1, fHeight * 0.05, 200, 50, menuButtons);
@@ -220,9 +232,9 @@ public class MainMenu implements ActionListener {
 		// NEWS
 		new JavaLabel("newsBackground", layers.get("news"), 0, 0, 1000, 700, labels, 1, routeMenu);
 		new ProgramButton("READ ARTICLES", layers.get("news"), fWidth * 0.1, fHeight * 0.82, 200, 50, menuButtons);
-		new JavaLabel("blackBar", layers.get("news"), 0, fHeight * 0.55, fWidth, 170, labels, 2, routeMenu);
+		new JavaLabel("blackBar", layers.get("news"), 0, fHeight * 0.55, fWidth, 180, labels, 2, routeMenu);
 		new ProgramButton("Delfi(sabiedriba)", layers.get("news"), fWidth * 0.1, fHeight * 0.15, 200, 50, menuButtons);
-		new ProgramButton("Delfi(bizness)", layers.get("news"), fWidth * 0.4, fHeight * 0.15, 200, 50, menuButtons);
+		new ProgramButton("LSM(populârâs)", layers.get("news"), fWidth * 0.4, fHeight * 0.15, 200, 50, menuButtons);
 		new ProgramButton("Delfi(visas)", layers.get("news"), fWidth * 0.7, fHeight * 0.15, 200, 50, menuButtons);
 		new ProgramButton("Use File", layers.get("news"), fWidth * 0.4, fHeight * 0.45, 200, 50, menuButtons);
 		new JavaLabel("currentNews", layers.get("news"), 0, fHeight * 0.04, fWidth, 30, labels, 2, routeMenu);
@@ -242,9 +254,9 @@ public class MainMenu implements ActionListener {
 		labels.get("CurrentArticleNR").setText("Currently selected article number : " + (articleIndex + 1));
 		new JavaLabel("NRerrText", layers.get("news"), fWidth * 0.4, fHeight * 0.82, 500, 50, labels, 2, routeMenu);
 		labels.get("NRerrText").setForeground(Color.red);
-		new JavaLabel("linkField", layers.get("news"), 0, fHeight * 0.7, fWidth * 0.98, 60, labels, 2, routeMenu);
+		new JavaLabel("linkField", layers.get("news"), 0, fHeight * 0.7, fWidth * 0.98, 80, labels, 2, routeMenu);
 		articleLink = new JTextArea();
-		articleLink.setBounds(10, 2, (int) (fWidth * 0.96), 60);
+		articleLink.setBounds(10, 2, (int) (fWidth * 0.96), 80);
 		articleLink.setForeground(Color.white);
 		articleLink.setFont(new Font("Verdana", Font.BOLD, 20));
 		articleLink.setOpaque(false);
@@ -273,3 +285,4 @@ public class MainMenu implements ActionListener {
 		return frame;
 	}
 }
+//287 lines, 1 constructor, 9 methods

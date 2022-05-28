@@ -7,7 +7,7 @@ import java.util.Scanner;
 import rss.RssData;
 
 public class DataGetter {
-	
+
 	public static ArrayList<String> getData(int index) {
 		ArrayList<String> words = new ArrayList<String>();
 		try {
@@ -47,3 +47,4 @@ public class DataGetter {
 		return words;
 	}
 }
+//49 lines, 2 methods
