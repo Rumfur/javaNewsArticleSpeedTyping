@@ -36,4 +36,5 @@ public class JavaLabel extends JLabel {
 		list.put(pngName, this);
 	}
 }
+
 //38 lines, 1 constructor, 1 method

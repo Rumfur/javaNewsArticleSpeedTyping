@@ -54,7 +54,7 @@ public class FallingWord extends JLabel {
 		return false;
 	}
 
-	public int despawn(ArrayList<FallingWord> list) {
+	public int despawn(ArrayList<FallingWord> list) { // removes word from list and screen
 		this.setVisible(false);
 		GameScreen.layers.get("game").remove(this);
 		list.remove(this);

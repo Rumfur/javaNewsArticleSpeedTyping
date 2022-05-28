@@ -20,4 +20,4 @@ public class mainSpeedTypeArticles {
 }
 // 20 lines, 1 method
 //
-// Total for project : 13 classes, 10 constructors, 53 methods, 1205 lines of code.
+// Total for project : 13 classes, 10 constructors, 53 methods, 1212 lines of code.

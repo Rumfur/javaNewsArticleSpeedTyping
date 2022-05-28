@@ -41,7 +41,7 @@ public class GameScreen implements ActionListener {
 		setupParameters2(MainMenu.difficulty);
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) { // method that timer uses
 		if (textField.getLineCount() == 2) { // is true when user presses enter
 			checkInput();
 		}

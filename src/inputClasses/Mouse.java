@@ -28,7 +28,7 @@ public class Mouse implements MouseListener {
 
 	public void mouseReleased(MouseEvent e) {
 		ProgramButton button = (ProgramButton) e.getSource();
-		if (button.inZone) {
+		if (button.inZone) { // checks if cursor is still on pressed button
 			switch (button.name) {
 			case "READ ARTICLES": {
 				MainMenu.layers.get("menu").setSlidePoint(-MainMenu.layers.get("play").xStart,
@@ -68,9 +68,9 @@ public class Mouse implements MouseListener {
 				}
 				break;
 			}
-			case "Delfi(bizness)": {
+			case "LSM(populârâs)": {
 				if (!MainMenu.selectedNewsSiteName.equals(button.name)) {
-					MainMenu.switchNews("https://www.delfi.lv/rss/?channel=bizness", button.name);
+					MainMenu.switchNews("https://www.lsm.lv/rss/?lang=lv&catid=14&popular", button.name);
 				}
 				break;
 			}
@@ -170,7 +170,7 @@ public class Mouse implements MouseListener {
 		}
 	}
 
-	public void menuSelect(String name) {
+	public void menuSelect(String name) { // selects active window
 		MainMenu.layers.get(name).selected = true;
 		for (String layer : MainMenu.layers.keySet()) {
 			if (layer != name) {
